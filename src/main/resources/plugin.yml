@@ -1,0 +1,21 @@
+name: MCMultimedia
+version: 1.0
+api-version: 1.13
+author: u/DeltaTwoForce
+main: deltatwoforce.mcmultimedia.McMultimedia
+
+commands:
+ steamtest:
+  description: Test the Steam API.
+ multimedia:
+  description: Use the Multimedia Plugin!
+  permission: multimedia.use
+
+permissions:
+ multimedia.*:
+  description: Contains all Multimedia permissions (There is only one other)
+  children:
+   multimedia.use: true
+ multimedia.use:
+  description: Permission to use the Multimedia Plugin
+  default: op

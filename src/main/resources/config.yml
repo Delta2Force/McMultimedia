@@ -1,0 +1,54 @@
+######################################## GENERAL ########################################
+
+# Set this to 'true' when, and only when you are done configuring the plugin.
+configured: false
+
+######################################### STEAM #########################################
+
+# !!!!!!!!!!!!!!!!!!!!!!!!WARNING!!!!!!!!!!!!!!!!!!!!!!!!
+# If you are running this plugin on a vps server, this will not work.
+# The steam section of this plugin has to be executed on a computer with steam installed.
+# !!!!!!!!!!!!!!!!!!!!!!WARNING END!!!!!!!!!!!!!!!!!!!!!!
+
+# Set this to 'true' if you want to enable steam.
+# Default value: disabled
+steam_enabled: false
+
+# Enter your Steam Web API token.
+# If you don't have one, you can create one here: https://steamcommunity.com/dev/apikey
+# The domain name you enter doesn't matter.
+# Default value: dummy text
+steam_auth_token: "Dummy text"
+
+# This has to be your SteamID64.
+# You can get your SteamID64 by using https://steamid.xyz/ or https://steamidfinder.com/
+# Default value: dummy number
+steam_id: 1
+
+######################################### REDDIT #########################################
+
+# Set this to 'true' if you want to enable reddit.
+# Default value: disabled
+reddit_enabled: false
+
+# If you want to use reddit, you will have to enter your API credentials.
+# You can generate them at https://www.reddit.com/prefs/apps/
+# Create a new application of the type "script" and enter whatever you want.
+# The URL can be whatever you want, in my case i just entered "http://google.com/"
+# 
+# The username and password have to be your reddit username and password.
+# If you don't want to enter them, that's fine, I understand. You can create a new account for free.
+# The client ID is the combination of letters under the title of your app.
+# The client secret is the combination of letters with "secret" next to it.
+#
+# Default values: dummy text
+reddit_username: "Dummy text"
+reddit_password: "Dummy text"
+reddit_client_id: "Dummy text"
+reddit_client_secret: "Dummy text"
+
+######################################## YOUTUBE #########################################
+
+# Set this to 'true' if you want to enable youtube.
+# Default value: disabled
+youtube_enabled: false	
