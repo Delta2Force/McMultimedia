@@ -186,7 +186,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 							try {
 								for(File f : dir.listFiles()) {
 									if(f.isFile()) {
-										new FFmpeg().run(new FFmpegBuilder().addInput(f.getName()).addOutput(vd.getPath() + File.separator + "i%04d.png").setVideoResolution(128, 128).done());
+										new FFmpeg().run(new FFmpegBuilder().addInput(f.getPath()).addOutput(vd.getPath() + File.separator + "i%04d.png").setVideoResolution(128, 128).done());
 									}
 								}
 							} catch (IOException e) {
