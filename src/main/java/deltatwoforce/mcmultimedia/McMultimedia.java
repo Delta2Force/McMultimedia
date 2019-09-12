@@ -19,6 +19,7 @@ import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -36,14 +37,12 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.gson.Gson;
 import com.ibasco.agql.protocols.valve.steam.webapi.SteamWebApiClient;
 import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamPlayerService;
 import com.ibasco.agql.protocols.valve.steam.webapi.pojos.SteamPlayerOwnedGame;
 import com.sapher.youtubedl.YoutubeDL;
 import com.sapher.youtubedl.YoutubeDLException;
 import com.sapher.youtubedl.YoutubeDLRequest;
-import com.sapher.youtubedl.YoutubeDLResponse;
 
 import deltatwoforce.mcmultimedia.renderer.PlaceholderIndex;
 import deltatwoforce.mcmultimedia.renderer.ScreenRenderer;
@@ -52,10 +51,8 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
-import net.dean.jraw.models.TimePeriod;
 import net.dean.jraw.oauth.Credentials;
 import net.dean.jraw.oauth.OAuthHelper;
 import net.dean.jraw.pagination.DefaultPaginator;
@@ -164,24 +161,43 @@ public class McMultimedia extends JavaPlugin implements Listener
 							p.sendMessage(ChatColor.YELLOW + "Downloading video...");
 							File dir = new File(".ydl");
 							if(dir.exists()) {
-								for(File F : dir.listFiles()) {
-									F.delete();
+								try {
+									FileUtils.deleteDirectory(dir);
+								} catch (IOException e) {
+									e.printStackTrace();
+									return false;
 								}
-							}else {
-								dir.mkdir();
 							}
+							
+							dir.mkdir();
+							
 							try {
 								YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
 							} catch (YoutubeDLException e) {
 								e.printStackTrace();
-								return true;
+								return false;
 							}
+							
 							p.sendMessage(ChatColor.YELLOW + "Slicing video...");
+							
+							File vd = new File(dir,"vid");
+							vd.mkdir();
+							
 							try {
-								FFmpeg ff = new FFmpeg();
+								for(File f : dir.listFiles()) {
+									if(f.isFile()) {
+										new FFmpeg().run(new FFmpegBuilder().addInput(f.getName()).addOutput(vd.getPath() + File.separator + "i%04d.png").setVideoResolution(128, 128).done());
+									}
+								}
 							} catch (IOException e) {
 								e.printStackTrace();
+								return false;
 							}
+							
+							renderer.imageList = new ArrayList<>();
+							renderer.imageList.addAll(Arrays.asList(vd.listFiles()));
+							
+							p.sendMessage(ChatColor.GREEN + "Enjoy the video!");
 						}
 					}else if(args[0].equals("redditnext") && state == MultimediaState.REDDIT) {
 						redditTick(p);
@@ -256,6 +272,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 		renderer.placeholderIndex = PlaceholderIndex.DEFAULT;
 		renderer.drawScreen = false;
 		renderer.render = null;
+		renderer.imageList = null;
 	}
 	
 	private Inventory createMenu() {

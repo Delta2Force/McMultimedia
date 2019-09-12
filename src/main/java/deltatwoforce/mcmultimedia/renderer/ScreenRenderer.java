@@ -4,8 +4,10 @@ import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -19,7 +21,9 @@ public class ScreenRenderer extends MapRenderer{
 	public boolean drawScreen;
 	public PlaceholderIndex placeholderIndex;
 	private Robot robot;
-	private ArrayList<BufferedImage> placeholderImages;
+	private List<BufferedImage> placeholderImages;
+	public List<File> imageList;
+	private int imageListIndex;
 	
 	public ScreenRenderer() {
 		placeholderIndex = PlaceholderIndex.DEFAULT;
@@ -43,19 +47,33 @@ public class ScreenRenderer extends MapRenderer{
 	
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		if(drawScreen) {
+		if(imageList != null) {
+			if(imageListIndex >= imageList.size()) {
+				imageList = null;
+				return;
+			}
+			try {
+				BufferedImage rndr = ImageIO.read(imageList.get(imageListIndex));
+				canvas.drawImage(0, 0, rndr);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			imageListIndex++;
+		}else if(drawScreen) {
 			BufferedImage screen = robot.createScreenCapture(new Rectangle(0, 0, 1920, 1080));
 			BufferedImage screenRender = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 			screenRender.createGraphics().drawImage(screen, 0, 0, 128, 128, null);
 			canvas.drawImage(0, 0, screenRender);
 			screenRender = null;
 			screen = null;
+			imageListIndex=0;
 		}else {
 			if(render == null) {
 				canvas.drawImage(0, 0, placeholderImages.get(placeholderIndex.getIndex()));
 			}else {
 				canvas.drawImage(0, 0, render);
 			}
+			imageListIndex=0;
 		}
 	}
 
