@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -159,12 +160,15 @@ public class McMultimedia extends JavaPlugin implements Listener
 							p.sendMessage(ChatColor.RED + "/multimedia yt <url>");
 						}else {
 							p.sendMessage(ChatColor.YELLOW + "Downloading video...");
+							
 							File dir = new File(".ydl");
 							if(dir.exists()) {
 								try {
 									FileUtils.deleteDirectory(dir);
 									dir.mkdir();
 								} catch (IOException e) {
+									p.sendMessage(ChatColor.RED + ExceptionUtils.getStackTrace(e));
+									p.sendMessage(ChatColor.RED + "An error has occured! Please send this error message, which has also been printed to the console, and report the issue on the GitHub page!");
 									e.printStackTrace();
 									return false;
 								}
@@ -172,33 +176,43 @@ public class McMultimedia extends JavaPlugin implements Listener
 								dir.mkdir();
 							}
 							
-							try {
-								YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
-							} catch (YoutubeDLException e) {
-								e.printStackTrace();
-								return false;
-							}
-							
-							p.sendMessage(ChatColor.YELLOW + "Slicing video...");
-							
-							File vd = new File(dir,"vid");
-							vd.mkdir();
-							
-							try {
-								for(File f : dir.listFiles()) {
-									if(f.isFile()) {
-										new FFmpeg().run(new FFmpegBuilder().addInput(f.getPath()).addOutput(vd.getPath() + File.separator + "i%04d.png").setVideoResolution(128, 128).done());
+							new Thread(new Runnable() {
+								
+								@Override
+								public void run() {
+									try {
+										YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
+									} catch (YoutubeDLException e) {
+										p.sendMessage(ChatColor.RED + ExceptionUtils.getStackTrace(e));
+										p.sendMessage(ChatColor.RED + "An error has occured! Please send this error message, which has also been printed to the console, and report the issue on the GitHub page!");
+										e.printStackTrace();
 									}
+									
+									p.sendMessage(ChatColor.YELLOW + "Slicing video...");
+									
+									File vd = new File(dir,"vid");
+									vd.mkdir();
+									
+									try {
+										for(File f : dir.listFiles()) {
+											if(f.isFile()) {
+												new FFmpeg().run(new FFmpegBuilder().addInput(f.getPath()).addOutput(vd.getPath() + File.separator + "img%06d.png").setVideoResolution(128, 128).done());
+											}
+										}
+									} catch (IOException e) {
+										p.sendMessage(ChatColor.RED + ExceptionUtils.getStackTrace(e));
+										p.sendMessage(ChatColor.RED + "An error has occured! Please send this error message, which has also been printed to the console, and report the issue on the GitHub page!");
+										e.printStackTrace();
+									}
+									
+									renderer.imageList = new ArrayList<>();
+									renderer.imageList.addAll(Arrays.asList(vd.listFiles()));
+									
+									p.sendMessage(ChatColor.GREEN + "Enjoy the video!");
+									
+									Thread.currentThread().interrupt();
 								}
-							} catch (IOException e) {
-								e.printStackTrace();
-								return false;
-							}
-							
-							renderer.imageList = new ArrayList<>();
-							renderer.imageList.addAll(Arrays.asList(vd.listFiles()));
-							
-							p.sendMessage(ChatColor.GREEN + "Enjoy the video!");
+							}).start();
 						}
 					}else if(args[0].equals("redditnext") && state == MultimediaState.REDDIT) {
 						redditTick(p);
