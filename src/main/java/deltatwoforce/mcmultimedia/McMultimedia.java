@@ -163,13 +163,14 @@ public class McMultimedia extends JavaPlugin implements Listener
 							if(dir.exists()) {
 								try {
 									FileUtils.deleteDirectory(dir);
+									dir.mkdir();
 								} catch (IOException e) {
 									e.printStackTrace();
 									return false;
 								}
+							}else {
+								dir.mkdir();
 							}
-							
-							dir.mkdir();
 							
 							try {
 								YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
