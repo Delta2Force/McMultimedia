@@ -159,7 +159,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 						if(args.length == 1) {
 							p.sendMessage(ChatColor.RED + "/multimedia yt <url>");
 						}else {
-							p.sendMessage(ChatColor.YELLOW + "Downloading video...");
+							p.sendMessage(ChatColor.YELLOW + "Cleaning up residue...");
 							
 							File dir = new File(".ydl");
 							if(dir.exists()) {
@@ -180,6 +180,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 								
 								@Override
 								public void run() {
+									p.sendMessage(ChatColor.YELLOW + "Downloading video...");
 									try {
 										YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
 									} catch (YoutubeDLException e) {
@@ -209,8 +210,6 @@ public class McMultimedia extends JavaPlugin implements Listener
 									renderer.imageList.addAll(Arrays.asList(vd.listFiles()));
 									
 									p.sendMessage(ChatColor.GREEN + "Enjoy the video!");
-									
-									Thread.currentThread().interrupt();
 								}
 							}).start();
 						}
