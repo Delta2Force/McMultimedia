@@ -210,6 +210,8 @@ public class McMultimedia extends JavaPlugin implements Listener
 									renderer.imageList = new ArrayList<>();
 									renderer.imageList.addAll(Arrays.asList(vd.listFiles()));
 									
+									renderer.placeholderIndex = PlaceholderIndex.YOUTUBE;
+									
 									p.sendMessage(ChatColor.GREEN + "Enjoy the video!");
 								}
 							}).start();
