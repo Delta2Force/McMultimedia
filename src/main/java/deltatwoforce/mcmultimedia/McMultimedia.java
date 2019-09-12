@@ -44,6 +44,7 @@ import com.ibasco.agql.protocols.valve.steam.webapi.pojos.SteamPlayerOwnedGame;
 import com.sapher.youtubedl.YoutubeDL;
 import com.sapher.youtubedl.YoutubeDLException;
 import com.sapher.youtubedl.YoutubeDLRequest;
+import com.sapher.youtubedl.YoutubeDLResponse;
 
 import deltatwoforce.mcmultimedia.renderer.PlaceholderIndex;
 import deltatwoforce.mcmultimedia.renderer.ScreenRenderer;
@@ -159,27 +160,26 @@ public class McMultimedia extends JavaPlugin implements Listener
 						if(args.length == 1) {
 							p.sendMessage(ChatColor.RED + "/multimedia yt <url>");
 						}else {
-							p.sendMessage(ChatColor.YELLOW + "Cleaning up residue...");
-							
-							File dir = new File(".ydl");
-							if(dir.exists()) {
-								try {
-									FileUtils.deleteDirectory(dir);
-									dir.mkdir();
-								} catch (IOException e) {
-									p.sendMessage(ChatColor.RED + ExceptionUtils.getStackTrace(e));
-									p.sendMessage(ChatColor.RED + "An error has occured! Please send this error message, which has also been printed to the console, and report the issue on the GitHub page!");
-									e.printStackTrace();
-									return false;
-								}
-							}else {
-								dir.mkdir();
-							}
-							
 							new Thread(new Runnable() {
 								
 								@Override
 								public void run() {
+									p.sendMessage(ChatColor.YELLOW + "Cleaning up residue...");
+									
+									File dir = new File(".ydl");
+									if(dir.exists()) {
+										try {
+											FileUtils.deleteDirectory(dir);
+											dir.mkdir();
+										} catch (IOException e) {
+											p.sendMessage(ChatColor.RED + ExceptionUtils.getStackTrace(e));
+											p.sendMessage(ChatColor.RED + "An error has occured! Please send this error message, which has also been printed to the console, and report the issue on the GitHub page!");
+											e.printStackTrace();
+										}
+									}else {
+										dir.mkdir();
+									}
+									
 									p.sendMessage(ChatColor.YELLOW + "Downloading video...");
 									renderer.placeholderIndex = PlaceholderIndex.YOUTUBE_DOWNLOADING;
 									try {
