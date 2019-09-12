@@ -1,3 +1,5 @@
+#########################################################################################
+# MULTIMEDIAMC CONFIG FILE ##############################################################
 ######################################## GENERAL ########################################
 
 # Set this to 'true' when, and only when you are done configuring the plugin.
@@ -49,6 +51,19 @@ reddit_client_secret: "Dummy text"
 
 ######################################## YOUTUBE #########################################
 
+# !!!!!!!!!!!!!!!!!!!!!!!!WARNING!!!!!!!!!!!!!!!!!!!!!!!!
+# This will generate large amounts of data since it downloads the entire video
+# and then cuts it up into frames.
+# !!!!!!!!!!!!!!!!!!!!!!WARNING END!!!!!!!!!!!!!!!!!!!!!!
+
+# To use YouTube, you will have to put FFMPEG and YOUTUBE-DL in your PATH.
+# How to do: https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg
+# (Just do the same but with youtube-dl! You can download it here: https://ytdl-org.github.io/youtube-dl/index.html)
+
 # Set this to 'true' if you want to enable youtube.
 # Default value: disabled
-youtube_enabled: false	
+youtube_enabled: false
+
+#########################################################################################
+# YOU HAVE REACHED THE END OF THE CONFIG FILE! ##########################################
+#########################################################################################
