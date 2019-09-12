@@ -294,6 +294,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 	
 	private Inventory createMenu() {
 		Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, colorCode("e")+"McMultimedia Menu");
+		inv.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("0")+"0", ""));
 		if(steamEnabled) {
 			inv.addItem(createSteamStack());
 		}
@@ -303,6 +304,18 @@ public class McMultimedia extends JavaPlugin implements Listener
 		if(youtubeEnabled) {
 			inv.addItem(createYoutubeStack());
 		}
+		inv.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("0")+"1", ""));
+		int actualCount = 0;
+		
+		for(ItemStack is : inv.getContents()) {
+			if(is != null)
+				actualCount++;
+		}
+		
+		for(int i = actualCount;i<inv.getSize();i++) {
+			inv.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("0")+i, ""));
+		}
+		
 		return inv;
 	}
 	
@@ -406,16 +419,16 @@ public class McMultimedia extends JavaPlugin implements Listener
 					
 					if(count == 25 || i == ownedGames.size()-2) {
 						for(int c = count;c<25;c++) {
-							currentPage.addItem(createNamedThing(Material.LIGHT_GRAY_STAINED_GLASS_PANE, colorCode("8")+c, ""));
+							currentPage.addItem(createNamedThing(Material.LIGHT_GRAY_STAINED_GLASS_PANE, colorCode("0")+c, ""));
 						}
 						if(page == 1) {
-							currentPage.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("8")+"p", ""));
+							currentPage.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("0")+"p", ""));
 						}else {
 							currentPage.addItem(createNamedThing(Material.ORANGE_STAINED_GLASS_PANE, colorCode("6") + colorCode("l") + "Previous Page", ""+(page-1)));
 						}
 						page++;
 						if(i == ownedGames.size()-2) {
-							currentPage.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("8")+"n", ""));
+							currentPage.addItem(createNamedThing(Material.GRAY_STAINED_GLASS_PANE, colorCode("0")+"n", ""));
 						}else {
 							currentPage.addItem(createNamedThing(Material.ORANGE_STAINED_GLASS_PANE, colorCode("6") + colorCode("l") + "Next Page", ""+(page)));
 						}
