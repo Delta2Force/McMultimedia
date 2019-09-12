@@ -32,7 +32,7 @@ public class ScreenRenderer extends MapRenderer{
 			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("placeholder.png")));
 			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("steamplaceholder.png")));
 			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("redditplaceholder.png")));
-			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("internetplaceholder.png")));
+			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("youtubedownloading.png")));
 			placeholderImages.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("youtubeplaceholder.png")));
 		} catch (IOException e) {
 			e.printStackTrace();

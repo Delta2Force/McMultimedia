@@ -181,6 +181,7 @@ public class McMultimedia extends JavaPlugin implements Listener
 								@Override
 								public void run() {
 									p.sendMessage(ChatColor.YELLOW + "Downloading video...");
+									renderer.placeholderIndex = PlaceholderIndex.YOUTUBE_DOWNLOADING;
 									try {
 										YoutubeDL.execute(new YoutubeDLRequest(args[1], dir.getPath()));
 									} catch (YoutubeDLException e) {
