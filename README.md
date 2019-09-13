@@ -1,4 +1,5 @@
 # McMultimedia
+### Spigot page: https://www.spigotmc.org/resources/mcmultimedia.71241/
 Multimedia plugin - access multiple types of multimedia in minecraft!
 
 ## Installation
